@@ -13,23 +13,44 @@ use TYPO3\Surf\Domain\Model\Deployment;
 use TYPO3\Surf\Domain\Model\Node;
 use TYPO3\Surf\Domain\Service\ShellCommandService;
 
+/**
+ * @covers HardlinkReleaseTask
+ */
 final class HardLinkReleaseTaskTest extends TestCase
 {
     private HardlinkReleaseTask $hardlinkReleaseTask;
 
+    /**
+     * @var LoggerInterface&MockObject
+     */
+    private LoggerInterface $logger;
+
+    /**
+     * @var MockObject&ShellCommandService
+     */
+    private ShellCommandService $shellCommandService;
+
     protected function setUp(): void
     {
-        $shellCommandServiceMock = $this->createMock(ShellCommandService::class);
+        $this->shellCommandService = $this->createMock(ShellCommandService::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->hardlinkReleaseTask = new HardlinkReleaseTask();
-        $this->hardlinkReleaseTask->setShellCommandService($shellCommandServiceMock);
+        $this->hardlinkReleaseTask->setShellCommandService($this->shellCommandService);
     }
 
     public function testExecute(): void
     {
         $nodeMock = $this->createNodeMock();
         $applicationMock = $this->createMock(Application::class);
-        $deploymentMock = $this->getDeploymentMock();
+        $deploymentMock = $this->getDeploymentMock(false);
+
+        $this->expectReleaseCommandCall($nodeMock, $deploymentMock);
+
+        $this->logger->expects(self::once())
+            ->method('notice')
+            ->with('<success>Node "my-test-node" is live!</success>');
+
         $this->hardlinkReleaseTask->execute(
             $nodeMock,
             $applicationMock,
@@ -41,7 +62,21 @@ final class HardLinkReleaseTaskTest extends TestCase
     {
         $nodeMock = $this->createNodeMock();
         $applicationMock = $this->createMock(Application::class);
-        $deploymentMock = $this->getDeploymentMock();
+        $deploymentMock = $this->getDeploymentMock(false);
+
+        $expectedCommand = [
+            'cd \'/my/cool/release\'',
+            'rm -rf ./current',
+            'if [ -e ./previous ]; then mv ./previous ./current; fi',
+        ];
+        $this->shellCommandService->expects(self::once())
+            ->method('execute')
+            ->with(
+                $expectedCommand,
+                $nodeMock,
+                $deploymentMock
+            );
+
         $this->hardlinkReleaseTask->rollback(
             $nodeMock,
             $applicationMock,
@@ -53,7 +88,14 @@ final class HardLinkReleaseTaskTest extends TestCase
     {
         $nodeMock = $this->createNodeMock();
         $applicationMock = $this->createMock(Application::class);
-        $deploymentMock = $this->getDeploymentMock();
+        $deploymentMock = $this->getDeploymentMock(true);
+
+        $this->expectReleaseCommandCall($nodeMock, $deploymentMock);
+
+        $this->logger->expects(self::once())
+            ->method('notice')
+            ->with('<success>Node "my-test-node" would be live!</success>');
+
         $this->hardlinkReleaseTask->simulate(
             $nodeMock,
             $applicationMock,
@@ -73,15 +115,37 @@ final class HardLinkReleaseTaskTest extends TestCase
     }
 
     /**
+     * @param MockObject&Node $nodeMock
+     * @param Deployment&MockObject $deploymentMock
+     */
+    private function expectReleaseCommandCall(Node $nodeMock, Deployment $deploymentMock): void
+    {
+        $expectedCommand = [
+            'cd \'/my/cool/release\'',
+            'rm -rf ./next',
+            'cp -al \'./the-release-id\' ./next',
+            'rm -rf ./previous',
+            'if [ -e ./current ]; then mv ./current ./previous; fi',
+            'mv ./next ./current',
+        ];
+
+        $this->shellCommandService->expects(self::once())
+            ->method('executeOrSimulate')
+            ->with(
+                $expectedCommand,
+                $nodeMock,
+                $deploymentMock
+            );
+    }
+
+    /**
      * @return Deployment&MockObject
      */
-    private function getDeploymentMock(): MockObject
+    private function getDeploymentMock(bool $isDryRun): MockObject
     {
-        $loggerMock = $this->createMock(LoggerInterface::class);
-
         $deploymentMock = $this->createMock(Deployment::class);
-        $deploymentMock->method('isDryRun')->willReturn(true);
-        $deploymentMock->method('getLogger')->willReturn($loggerMock);
+        $deploymentMock->method('isDryRun')->willReturn($isDryRun);
+        $deploymentMock->method('getLogger')->willReturn($this->logger);
         $deploymentMock->method('getReleaseIdentifier')->willReturn('the-release-id');
         return $deploymentMock;
     }
