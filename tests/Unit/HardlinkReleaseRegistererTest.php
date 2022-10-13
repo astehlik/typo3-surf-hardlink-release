@@ -16,12 +16,6 @@ use TYPO3\Surf\Task\SymlinkReleaseTask;
  */
 class HardlinkReleaseRegistererTest extends TestCase
 {
-    public function callRegisterer($workflow, $application): void
-    {
-        $registerer = new HardlinkReleaseRegisterer();
-        $registerer->replaceSymlinkWithHardlinkRelease($workflow, $application);
-    }
-
     public function testHardLinkReleaseTaskIsRegistered(): void
     {
         $workflow = $this->createMock(Workflow::class);
@@ -44,5 +38,11 @@ class HardlinkReleaseRegistererTest extends TestCase
             ->with(SymlinkReleaseTask::class);
 
         $this->callRegisterer($workflow, $application);
+    }
+
+    private function callRegisterer(Workflow $workflow, ?Application $application): void
+    {
+        $registerer = new HardlinkReleaseRegisterer();
+        $registerer->replaceSymlinkWithHardlinkRelease($workflow, $application);
     }
 }
