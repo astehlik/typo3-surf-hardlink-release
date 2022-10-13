@@ -16,11 +16,6 @@ use TYPO3\Surf\Task\SymlinkReleaseTask;
  */
 class HardlinkReleaseRegistererTest extends TestCase
 {
-    /**
-     * @param $workflow
-     * @param $application
-     * @return void
-     */
     public function callRegisterer($workflow, $application): void
     {
         $registerer = new HardlinkReleaseRegisterer();
