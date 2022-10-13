@@ -50,6 +50,7 @@
             "@composer-normalize",
             "@php-codesniffer",
             "@php-cs-fixer",
+            "@php-lint",
             "@phpmd",
             "@phpstan"
         ],
@@ -76,6 +77,7 @@
         "php-cs-fixer-install": [
             "composer require --no-interaction --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer"
         ],
+        "php-lint": "find src tests -type f -name '*.php' -print0 | xargs -0 -n1 -P4 php -l -n | (! grep -v 'No syntax errors detected')",
         "phpmd": [
             "composer require --no-interaction --working-dir=tools/phpmd phpmd/phpmd",
             "@php tools/phpmd/vendor/bin/phpmd src text vendor/de-swebhosting/php-codestyle/PhpMd/RulesetTypo3.xml"
