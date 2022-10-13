@@ -14,7 +14,7 @@ use TYPO3\Surf\Domain\Model\Node;
 use TYPO3\Surf\Domain\Service\ShellCommandService;
 
 /**
- * @covers HardlinkReleaseTask
+ * @covers \De\SWebhosting\TYPO3Surf\HardlinkReleaseTask
  */
 final class HardLinkReleaseTaskTest extends TestCase
 {

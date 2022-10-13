@@ -12,24 +12,42 @@ use TYPO3\Surf\Domain\Model\Workflow;
 use TYPO3\Surf\Task\SymlinkReleaseTask;
 
 /**
- * @covers HardlinkReleaseRegisterer
+ * @covers \De\SWebhosting\TYPO3Surf\HardlinkReleaseRegisterer
  */
 class HardlinkReleaseRegistererTest extends TestCase
 {
-    public function test()
+    /**
+     * @param $workflow
+     * @param $application
+     * @return void
+     */
+    public function callRegisterer($workflow, $application): void
+    {
+        $registerer = new HardlinkReleaseRegisterer();
+        $registerer->replaceSymlinkWithHardlinkRelease($workflow, $application);
+    }
+
+    public function testHardLinkReleaseTaskIsRegistered(): void
     {
         $workflow = $this->createMock(Workflow::class);
         $application = $this->createMock(Application::class);
 
-        $workflow->expects($this->once())
-            ->method('removeTask')
-            ->with(SymlinkReleaseTask::class);
-
-        $workflow->expects($this->once())
+        $workflow->expects(self::once())
             ->method('addTask')
             ->with(HardlinkReleaseTask::class, 'switch', $application);
 
-        $registerer = new HardlinkReleaseRegisterer();
-        $registerer->replaceSymlinkWithHardlinkRelease($workflow, $application);
+        $this->callRegisterer($workflow, $application);
+    }
+
+    public function testSymlinkReleaseTaskIsRemoved(): void
+    {
+        $workflow = $this->createMock(Workflow::class);
+        $application = $this->createMock(Application::class);
+
+        $workflow->expects(self::once())
+            ->method('removeTask')
+            ->with(SymlinkReleaseTask::class);
+
+        $this->callRegisterer($workflow, $application);
     }
 }
