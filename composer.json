@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "~8.1",
+        "php": ">=7.4 <8.2",
         "typo3/surf": "^3.1"
     },
     "require-dev": {
@@ -63,7 +63,7 @@
         ],
         "php-codesniffer-install": [
             "composer require --no-interaction --working-dir=tools/php-codesniffer squizlabs/php_codesniffer",
-            "@php tools/php-codesniffer/vendor/bin/phpcs --standard=PSRDefault src tests"
+            "@php tools/php-codesniffer/vendor/bin/phpcs --config-set installed_paths vendor/de-swebhosting/php-codestyle/PhpCodeSniffer"
         ],
         "php-cs-fixer": [
             "@php-cs-fixer-install",
@@ -84,9 +84,9 @@
             "composer require --working-dir=tools/phpstan phpstan/phpstan",
             "@php tools/phpstan/vendor/bin/phpstan.phar analyse src tests --level 9"
         ],
+        "phpunit": "@php vendor/bin/phpunit tests",
         "test": [
             "@phpunit"
-        ],
-        "phpunit": "@php vendor/bin/phpunit tests"
+        ]
     }
 }

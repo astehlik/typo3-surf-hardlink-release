@@ -61,7 +61,10 @@ final class HardLinkReleaseTaskTest extends TestCase
         );
     }
 
-    private function createNodeMock(): MockObject&Node
+    /**
+     * @return MockObject&Node
+     */
+    private function createNodeMock(): MockObject
     {
         $nodeMock = $this->createMock(Node::class);
         $nodeMock->method('getReleasesPath')->willReturn('/my/cool/release');
@@ -69,7 +72,10 @@ final class HardLinkReleaseTaskTest extends TestCase
         return $nodeMock;
     }
 
-    private function getDeploymentMock(): Deployment&MockObject
+    /**
+     * @return Deployment&MockObject
+     */
+    private function getDeploymentMock(): MockObject
     {
         $loggerMock = $this->createMock(LoggerInterface::class);
 
