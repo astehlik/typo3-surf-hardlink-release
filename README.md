@@ -17,3 +17,13 @@ To switch the release to the new version, the directories current and next are m
 mv ./current ./previous
 mv ./next ./current
 ```
+
+## How to use
+
+In the `registerTasks()` method of your application you can use the `HardlinkReleaseRegisterer` to
+replace the symlink release with a hardlink release:
+
+```php
+(new \De\SWebhosting\TYPO3Surf\HardlinkReleaseRegisterer())
+    ->replaceSymlinkWithHardlinkRelease($workflow, $this);
+```
