@@ -83,7 +83,7 @@
             "@create-tool-directories",
             "composer require --no-interaction --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer"
         ],
-        "php-lint": "find src tests -type f -name '*.php' -print0 | xargs -0 -n1 -P4 php -l -n | (! grep -v 'No syntax errors detected')",
+        "php-lint": "find . -path ./tools -prune -false -o -path ./vendor -prune -false -o -type f -name '*.php' -print0 | xargs -0 -n1 -P$(nproc 2> /dev/null || sysctl -n hw.ncpu) php -l -n",
         "phpmd": [
             "@create-tool-directories",
             "composer require --no-interaction --working-dir=tools/phpmd phpmd/phpmd",
