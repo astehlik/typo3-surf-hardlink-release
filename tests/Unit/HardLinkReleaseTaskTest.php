@@ -65,7 +65,7 @@ final class HardLinkReleaseTaskTest extends TestCase
         $deploymentMock = $this->getDeploymentMock(false);
 
         $expectedCommand = [
-            'cd \'/my/cool/release\'',
+            'cd ' . escapeshellarg('/my/cool/release'),
             'rm -rf ./current',
             'if [ -e ./previous ]; then mv ./previous ./current; fi',
         ];
@@ -121,9 +121,9 @@ final class HardLinkReleaseTaskTest extends TestCase
     private function expectReleaseCommandCall(Node $nodeMock, Deployment $deploymentMock): void
     {
         $expectedCommand = [
-            'cd \'/my/cool/release\'',
+            'cd ' . escapeshellarg('/my/cool/release'),
             'rm -rf ./next',
-            'cp -al \'./the-release-id\' ./next',
+            'cp -al ' . escapeshellarg('./the-release-id') . ' ./next',
             'rm -rf ./previous',
             'if [ -e ./current ]; then mv ./current ./previous; fi',
             'mv ./next ./current',
