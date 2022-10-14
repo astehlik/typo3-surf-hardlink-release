@@ -1,5 +1,7 @@
 # TYPO3 Surf hardlink release
 
+[![Run tests and linting](https://github.com/astehlik/typo3-surf-hardlink-release/actions/workflows/test.yml/badge.svg)](https://github.com/astehlik/typo3-surf-hardlink-release/actions/workflows/test.yml)
+
 This repo provides a task for [TYPO3 Surf](https://github.com/TYPO3/Surf)
 to release your application with hardlinks instead of softlinks.
 
