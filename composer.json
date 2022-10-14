@@ -45,7 +45,8 @@
         "fix": [
             "@composer-normalize-fix",
             "@php-cs-fixer-fix",
-            "@php-codesniffer-fix"
+            "@php-codesniffer-fix",
+            "@prettier-fix"
         ],
         "lint": [
             "@composer-validate",
@@ -54,7 +55,8 @@
             "@php-cs-fixer",
             "@php-lint",
             "@phpmd",
-            "@phpstan"
+            "@phpstan",
+            "@prettier"
         ],
         "php-codesniffer": [
             "@php-codesniffer-install",
@@ -93,6 +95,18 @@
             "@php tools/phpstan/vendor/bin/phpstan.phar analyse src tests --level 9"
         ],
         "phpunit": "@php vendor/bin/phpunit tests",
+        "prettier": [
+            "@prettier-install",
+            "npx --prefix tools/prettier prettier --ignore-path .gitignore --check ."
+        ],
+        "prettier-fix": [
+            "@prettier-install",
+            "npx --prefix tools/prettier prettier --ignore-path .gitignore --write ."
+        ],
+        "prettier-install": [
+            "@create-tool-directories",
+            "npm install --prefix tools/prettier prettier"
+        ],
         "test": [
             "@phpunit"
         ]

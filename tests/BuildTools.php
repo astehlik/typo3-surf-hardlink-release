@@ -9,12 +9,13 @@ class BuildTools
     /**
      * @var string[]
      */
-    private static $toolDirectories = [
+    private static array $toolDirectories = [
         'composer-normalize',
         'php-codesniffer',
         'php-cs-fixer',
         'phpmd',
         'phpstan',
+        'prettier',
     ];
 
     public static function createToolsDirectories(): void
