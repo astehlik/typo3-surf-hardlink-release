@@ -37,13 +37,13 @@ class HardlinkReleaseTask extends Task implements ShellCommandServiceAwareInterf
         $this->shell->executeOrSimulate($commands, $node, $deployment);
 
         $logMessage = 'Node "' . $node->getName() . '" ' . ($deployment->isDryRun() ? 'would be' : 'is') . ' live!';
-        $deployment->getLogger()->notice('<success>' . $logMessage . '</success>');
+        $this->logger->notice('<success>' . $logMessage . '</success>');
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param string[] $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function rollback(Node $node, Application $application, Deployment $deployment, array $options = []): void
     {
@@ -59,8 +59,6 @@ class HardlinkReleaseTask extends Task implements ShellCommandServiceAwareInterf
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param string[] $options
      */
     public function simulate(Node $node, Application $application, Deployment $deployment, array $options = []): void
