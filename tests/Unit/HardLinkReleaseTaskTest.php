@@ -37,6 +37,7 @@ final class HardLinkReleaseTaskTest extends TestCase
 
         $this->hardlinkReleaseTask = new HardlinkReleaseTask();
         $this->hardlinkReleaseTask->setShellCommandService($this->shellCommandService);
+        $this->hardlinkReleaseTask->setLogger($this->logger);
     }
 
     public function testExecute(): void
@@ -145,7 +146,6 @@ final class HardLinkReleaseTaskTest extends TestCase
     {
         $deploymentMock = $this->createMock(Deployment::class);
         $deploymentMock->method('isDryRun')->willReturn($isDryRun);
-        $deploymentMock->method('getLogger')->willReturn($this->logger);
         $deploymentMock->method('getReleaseIdentifier')->willReturn('the-release-id');
         return $deploymentMock;
     }
