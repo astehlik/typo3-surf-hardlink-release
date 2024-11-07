@@ -9,12 +9,12 @@
         }
     ],
     "require": {
-        "php": ">=8.0 <8.3",
+        "php": ">=8.2 <8.4",
         "typo3/surf": "^3.1"
     },
     "require-dev": {
-        "de-swebhosting/php-codestyle": "^4.0",
-        "phpunit/phpunit": "^9.5"
+        "de-swebhosting/php-codestyle": "^5.4",
+        "phpunit/phpunit": "^11.4"
     },
     "autoload": {
         "psr-4": {
