@@ -55,7 +55,7 @@ final class HardLinkReleaseTaskTest extends TestCase
         $this->hardlinkReleaseTask->execute(
             $nodeMock,
             $applicationMock,
-            $deploymentMock
+            $deploymentMock,
         );
     }
 
@@ -75,13 +75,13 @@ final class HardLinkReleaseTaskTest extends TestCase
             ->with(
                 $expectedCommand,
                 $nodeMock,
-                $deploymentMock
+                $deploymentMock,
             );
 
         $this->hardlinkReleaseTask->rollback(
             $nodeMock,
             $applicationMock,
-            $deploymentMock
+            $deploymentMock,
         );
     }
 
@@ -100,7 +100,7 @@ final class HardLinkReleaseTaskTest extends TestCase
         $this->hardlinkReleaseTask->simulate(
             $nodeMock,
             $applicationMock,
-            $deploymentMock
+            $deploymentMock,
         );
     }
 
@@ -135,7 +135,7 @@ final class HardLinkReleaseTaskTest extends TestCase
             ->with(
                 $expectedCommand,
                 $nodeMock,
-                $deploymentMock
+                $deploymentMock,
             );
     }
 
