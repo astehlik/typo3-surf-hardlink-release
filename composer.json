@@ -79,7 +79,7 @@
         ],
         "php-cs-fixer": [
             "@php-cs-fixer-install",
-            "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff"
+            "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff -v"
         ],
         "php-cs-fixer-fix": [
             "@php-cs-fixer-install",
