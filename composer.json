@@ -9,12 +9,12 @@
         }
     ],
     "require": {
-        "php": ">=8.0 <8.3",
+        "php": ">=8.2 <8.4",
         "typo3/surf": "^3.1"
     },
     "require-dev": {
-        "de-swebhosting/php-codestyle": "^4.0",
-        "phpunit/phpunit": "^9.5"
+        "de-swebhosting/php-codestyle": "^5.4",
+        "phpunit/phpunit": "^11.4"
     },
     "autoload": {
         "psr-4": {
@@ -79,7 +79,7 @@
         ],
         "php-cs-fixer": [
             "@php-cs-fixer-install",
-            "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff"
+            "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff -v"
         ],
         "php-cs-fixer-fix": [
             "@php-cs-fixer-install",
@@ -97,7 +97,7 @@
         ],
         "phpstan": [
             "@create-tool-directories",
-            "composer require --working-dir=tools/phpstan phpstan/phpstan",
+            "composer require --no-interaction --working-dir=tools/phpstan phpstan/phpstan",
             "@php tools/phpstan/vendor/bin/phpstan.phar analyse src tests --level 9"
         ],
         "phpunit": "@php vendor/bin/phpunit tests",
