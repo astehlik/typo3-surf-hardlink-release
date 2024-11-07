@@ -97,7 +97,7 @@
         ],
         "phpstan": [
             "@create-tool-directories",
-            "composer require --working-dir=tools/phpstan phpstan/phpstan",
+            "composer require --no-interaction --working-dir=tools/phpstan phpstan/phpstan",
             "@php tools/phpstan/vendor/bin/phpstan.phar analyse src tests --level 9"
         ],
         "phpunit": "@php vendor/bin/phpunit tests",
