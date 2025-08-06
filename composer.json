@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": ">=8.2 <8.4",
+        "php": ">=8.2 <8.5",
         "typo3/surf": "^3.1"
     },
     "require-dev": {

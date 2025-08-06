@@ -43,7 +43,7 @@ class HardlinkReleaseTask extends Task implements ShellCommandServiceAwareInterf
     /**
      * @param string[] $options
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     public function rollback(Node $node, Application $application, Deployment $deployment, array $options = []): void
     {
