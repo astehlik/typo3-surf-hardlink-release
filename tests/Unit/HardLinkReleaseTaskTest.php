@@ -59,6 +59,26 @@ final class HardLinkReleaseTaskTest extends TestCase
         );
     }
 
+    public function testExecuteWithSudo(): void
+    {
+        $nodeMock = $this->createNodeMock();
+        $applicationMock = $this->createMock(Application::class);
+        $deploymentMock = $this->getDeploymentMock(false);
+
+        $this->expectReleaseCommandCall($nodeMock, $deploymentMock, true);
+
+        $this->logger->expects(self::once())
+            ->method('notice')
+            ->with('<success>Node "my-test-node" is live!</success>');
+
+        $this->hardlinkReleaseTask->execute(
+            $nodeMock,
+            $applicationMock,
+            $deploymentMock,
+            ['sudo' => true],
+        );
+    }
+
     public function testRollback(): void
     {
         $nodeMock = $this->createNodeMock();
@@ -82,6 +102,33 @@ final class HardLinkReleaseTaskTest extends TestCase
             $nodeMock,
             $applicationMock,
             $deploymentMock,
+        );
+    }
+
+    public function testRollbackWithSudo(): void
+    {
+        $nodeMock = $this->createNodeMock();
+        $applicationMock = $this->createMock(Application::class);
+        $deploymentMock = $this->getDeploymentMock(false);
+
+        $expectedCommand = [
+            'cd ' . escapeshellarg('/my/cool/release'),
+            'sudo rm -rf ./current',
+            'if [ -e ./previous ]; then mv ./previous ./current; fi',
+        ];
+        $this->shellCommandService->expects(self::once())
+            ->method('execute')
+            ->with(
+                $expectedCommand,
+                $nodeMock,
+                $deploymentMock,
+            );
+
+        $this->hardlinkReleaseTask->rollback(
+            $nodeMock,
+            $applicationMock,
+            $deploymentMock,
+            ['sudo' => true],
         );
     }
 
@@ -119,13 +166,15 @@ final class HardLinkReleaseTaskTest extends TestCase
      * @param MockObject&Node $nodeMock
      * @param Deployment&MockObject $deploymentMock
      */
-    private function expectReleaseCommandCall(Node $nodeMock, Deployment $deploymentMock): void
+    private function expectReleaseCommandCall(Node $nodeMock, Deployment $deploymentMock, bool $sudo = false): void
     {
+        $sudoPrefix = $sudo ? 'sudo ' : '';
+
         $expectedCommand = [
             'cd ' . escapeshellarg('/my/cool/release'),
-            'rm -rf ./next',
-            'cp -al ' . escapeshellarg('./the-release-id') . ' ./next',
-            'rm -rf ./previous',
+            $sudoPrefix . 'rm -rf ./next',
+            $sudoPrefix . 'cp -al ' . escapeshellarg('./the-release-id') . ' ./next',
+            $sudoPrefix . 'rm -rf ./previous',
             'if [ -e ./current ]; then mv ./current ./previous; fi',
             'mv ./next ./current',
         ];
