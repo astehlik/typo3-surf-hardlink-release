@@ -51,6 +51,7 @@ class HardlinkReleaseTask extends Task implements ShellCommandServiceAwareInterf
             'mv ./next ./current',
         ];
 
+        $this->shell->setLogger($this->logger);
         $this->shell->executeOrSimulate($commands, $node, $deployment);
 
         $logMessage = 'Node "' . $node->getName() . '" ' . ($deployment->isDryRun() ? 'would be' : 'is') . ' live!';
@@ -75,6 +76,7 @@ class HardlinkReleaseTask extends Task implements ShellCommandServiceAwareInterf
             'if [ -e ./previous ]; then mv ./previous ./current; fi',
         ];
 
+        $this->shell->setLogger($this->logger);
         $this->shell->execute($commands, $node, $deployment, true);
     }
 
